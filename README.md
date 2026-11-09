@@ -2,9 +2,20 @@
 
 A small static website for collecting party preferences and availability.
 
-## Important: how guest answers are saved
+## Shared planner data
 
-The current version stores answers in the browser's local storage. That means each guest sees only the answers saved in their own browser and device. Publishing the site makes the page available online, but does not create a shared guest list or calendar. Do not use this version to coordinate real group availability until shared storage has been added.
+Guest responses are stored in Supabase and update across devices in real time. The site uses the Supabase publishable key in the browser; that key is designed to be public and must be paired with the row-level security rules in `supabase/setup.sql`.
+
+**Privacy note:** this link-based version lets anyone who can access the website view and edit the planner. Only share the site link with the intended guests. If you need access limited to invited people, add sign-in or another server-verified access check before sharing.
+
+### Configure Supabase once
+
+1. Create a Supabase project and keep its database password private.
+2. In the Supabase dashboard, open **SQL Editor → New query**.
+3. Open `supabase/setup.sql` in this project, copy all of its contents into the SQL Editor, and click **Run**. This creates the shared state table, its policies, and its Realtime publication entry.
+4. Open the website and confirm the status badge says **Shared planner · live**. The first visit creates Belle's initial planner record.
+
+The website is already configured with the Project URL and publishable key for this Supabase project. Never put a Supabase secret or service-role key in this repository.
 
 ## Publish with GitHub Pages
 
@@ -29,3 +40,4 @@ After editing files, open the project in GitHub Desktop, write a short summary i
 
 - `index.html` — the website
 - `.github/workflows/deploy.yml` — automatic GitHub Pages deployment
+- `supabase/setup.sql` — shared data table, access policies, and Realtime setup
